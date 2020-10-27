@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RecYouBackend.Model;
+using RecYouBackend.Util;
 using Stream;
 
 namespace RecYouBackend.Controllers
@@ -31,6 +33,7 @@ namespace RecYouBackend.Controllers
 
         // GET api/<UserController>/username/true/false
         [HttpGet("{userName}/{light}")]
+        [Authorize]
         public async Task<Model.User> GetAsync(string userName, bool light)
         {
             if (light)
@@ -74,7 +77,7 @@ namespace RecYouBackend.Controllers
                 return e.Message;
             }
 
-            return "User " + userDto.Username + " was created correctly.";
+            return JWT.GenerateToken(userDto.Username);
 
         }
 
