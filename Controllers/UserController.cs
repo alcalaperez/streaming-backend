@@ -34,7 +34,7 @@ namespace RecYouBackend.Controllers
         // GET api/<UserController>/username/true/false
         [HttpGet("{userName}/{light}")]
         [Authorize]
-        public async Task<Model.User> GetAsync(string userName, bool light)
+        public async Task<Model.User> Get(string userName, bool light)
         {
             if (light)
             {               
@@ -44,12 +44,28 @@ namespace RecYouBackend.Controllers
                 FullUser fullUser;
                 fullUser = _database.GetInstance.QuerySingleOrDefault<Model.FullUser>("SELECT username, pic_url FROM users where username=@user", new { user = userName });
                 IStreamFeed userFeed = _streamApi.StreamClient.Feed("user", userName);
+                IStreamFeed userTimeline = _streamApi.StreamClient.Feed("timeline", userName);
                 fullUser.Posts = await userFeed.GetActivities();
                 fullUser.Followers = await userFeed.Followers();
-                fullUser.Following = await userFeed.Following();
+                fullUser.Following = await userTimeline.Following();
 
                 return fullUser;
             }
+
+        }
+
+        // GET api/<UserController>/username/true/false
+        [HttpGet("exists/{userName}")]
+        [AllowAnonymous]
+        public bool Get(string userName)
+        {
+
+            var u = _database.GetInstance.QuerySingleOrDefault<Model.User>("SELECT username, pic_url FROM users where username=@user", new { user = userName });
+            if (u != null)
+            {
+                return true;
+            }
+            return false;
 
         }
 
