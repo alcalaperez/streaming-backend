@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.AspNetCore.Authorization;
@@ -26,9 +27,9 @@ namespace RecYouBackend.Controllers
 
         // GET: api/<UserController>
         [HttpGet]
-        public void Get()
+        public IEnumerable<Model.User> Get()
         {
-            
+            return _database.GetInstance.Query<Model.User>("SELECT username, pic_url FROM users");
         }
 
         // GET api/<UserController>/username/true/false
@@ -48,6 +49,9 @@ namespace RecYouBackend.Controllers
                 fullUser.Posts = await userFeed.GetActivities();
                 fullUser.Followers = await userFeed.Followers();
                 fullUser.Following = await userTimeline.Following();
+                fullUser.Followers = fullUser.Followers.Where(f => f.FeedId.Split(':')[1] != userName);
+                fullUser.Following = fullUser.Following.Where(f => f.TargetId.Split(':')[1] != userName);
+
 
                 return fullUser;
             }
