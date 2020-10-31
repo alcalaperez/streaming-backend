@@ -43,12 +43,14 @@ namespace RecYouBackend.Controllers
             } else
             {
                 FullUser fullUser;
-                fullUser = _database.GetInstance.QuerySingleOrDefault<Model.FullUser>("SELECT username, pic_url FROM users where username=@user", new { user = userName });
+                fullUser = _database.GetInstance.QuerySingleOrDefault<FullUser>("SELECT username, pic_url FROM users where username=@user", new { user = userName });
                 IStreamFeed userFeed = _streamApi.StreamClient.Feed("user", userName);
                 IStreamFeed userTimeline = _streamApi.StreamClient.Feed("timeline", userName);
                 fullUser.Posts = await userFeed.GetActivities();
                 fullUser.Followers = await userFeed.Followers();
                 fullUser.Following = await userTimeline.Following();
+
+                // Remove the user itself from the list of followers/following
                 fullUser.Followers = fullUser.Followers.Where(f => f.FeedId.Split(':')[1] != userName);
                 fullUser.Following = fullUser.Following.Where(f => f.TargetId.Split(':')[1] != userName);
 

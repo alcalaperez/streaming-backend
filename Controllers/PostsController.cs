@@ -23,8 +23,8 @@ namespace RecYouBackend.Controllers
         [Authorize]
         public void Post([FromBody] PostDto pdto)
         {
-            IStreamFeed userTimeline = _streamApi.StreamClient.Feed("user", pdto.UserName);
-            var activityData = new Activity(pdto.UserName, "posts", pdto.AudioUrl + "," + pdto.PictureUrl)
+            IStreamFeed userTimeline = _streamApi.StreamClient.Feed("user", User.Identity.Name);
+            var activityData = new Activity(User.Identity.Name, "posts", pdto.AudioUrl + "," + pdto.PictureUrl)
             {
                 ForeignId = pdto.AudioUrl,
                 Target = pdto.Description,
@@ -39,7 +39,7 @@ namespace RecYouBackend.Controllers
         [Authorize]
         public void Delete([FromBody] PostDto pdto)
         {
-            IStreamFeed userTimeline = _streamApi.StreamClient.Feed("user", pdto.UserName);
+            IStreamFeed userTimeline = _streamApi.StreamClient.Feed("user", User.Identity.Name);
             userTimeline.RemoveActivity(pdto.AudioUrl, true);
         }
     }

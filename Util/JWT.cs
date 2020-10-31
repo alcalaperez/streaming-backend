@@ -21,7 +21,7 @@ namespace RecYouBackend.Util
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {           
-                    new Claim(ClaimTypes.NameIdentifier, username),                
+                    new Claim(ClaimTypes.Name, username),                
                 }),
                 Expires = DateTime.UtcNow.AddYears(10),
                 Issuer = configuration.GetConnectionString("JwtIssuer"),

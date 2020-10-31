@@ -17,11 +17,11 @@ namespace RecYouBackend.Controllers
         }
 
         // GET api/<FeedController>/5
-        [HttpGet("{username}")]
+        [HttpGet]
         [Authorize]
-        public IEnumerable<Activity> Get(string username)
+        public IEnumerable<Activity> Get()
         {
-            IStreamFeed userTimeline = _streamApi.StreamClient.Feed("timeline", username);
+            IStreamFeed userTimeline = _streamApi.StreamClient.Feed("timeline", User.Identity.Name);
             return userTimeline.GetFlatActivities().Result.Results;
         }
 
