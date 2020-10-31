@@ -28,7 +28,8 @@ namespace RecYouBackend.Controllers
                 return JWT.GenerateToken(userDto.Username);
             } else
             {
-                return "Invalid credentials";
+                HttpContext.Response.StatusCode = 401;
+                return null;
             }
         }
 
