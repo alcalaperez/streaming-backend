@@ -37,10 +37,10 @@ namespace RecYouBackend.Controllers
         // DELETE api/<PostsController>/5
         [HttpDelete]
         [Authorize]
-        public void Delete([FromBody] PostDto pdto)
+        public async void Delete([FromBody] PostDto pdto)
         {
             IStreamFeed userTimeline = _streamApi.StreamClient.Feed("user", User.Identity.Name);
-            userTimeline.RemoveActivity(pdto.AudioUrl, true);
+            await userTimeline.RemoveActivity(pdto.ForeignId);
         }
     }
 }
