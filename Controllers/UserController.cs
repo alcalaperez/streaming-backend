@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Dapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using RecYouBackend.Model;
 using RecYouBackend.Util;
 using Stream;
@@ -88,8 +89,9 @@ namespace RecYouBackend.Controllers
             {
                 // Add user to the Stream API
                 await _streamApi.StreamClient.Users.Add(userDto.Username, userData);
+                PasswordHasher ph = new PasswordHasher();
                 // Add user to the DB
-                _database.GetInstance.Execute("INSERT INTO users (username, pass, pic_url) VALUES(@user, @pass, @pic)", new { user = userDto.Username, pass = userDto.Password, pic = userDto.ProfilePictureUrl });
+                _database.GetInstance.Execute("INSERT INTO users (username, pass, pic_url) VALUES(@user, @pass, @pic)", new { user = userDto.Username, pass = ph.Hash(userDto.Password), pic = userDto.ProfilePictureUrl });
                 // Register user timeline to his profile (the user timeline will show his own posts)
                 IStreamFeed userTimeline = _streamApi.StreamClient.Feed("timeline", userDto.Username);
                 await userTimeline.FollowFeed("user", userDto.Username);

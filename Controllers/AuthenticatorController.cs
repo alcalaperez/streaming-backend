@@ -21,8 +21,17 @@ namespace RecYouBackend.Controllers
         [HttpPost]
         public string Post([FromBody] UserDto userDto)
         {
-            var pic = _database.GetInstance.QuerySingleOrDefault<string>("SELECT pic_url FROM users WHERE username = @user AND pass = @pass", new { user = userDto.Username, pass = userDto.Password });
-            if(pic != null)
+            PasswordHasher ph = new PasswordHasher();            
+            UserDto user = _database.GetInstance.QuerySingleOrDefault<UserDto>("SELECT username, pass FROM users WHERE username = @user", new { user = userDto.Username });
+            if(user == null)
+            {
+                HttpContext.Response.StatusCode = 401;
+                return null;
+
+            }
+
+            (bool Verified, bool NeedsUpgrade) checkResult = ph.Check(user.Pass, userDto.Password);
+            if (checkResult.Verified)
             {
                 return JWT.GenerateToken(userDto.Username);
             } else
