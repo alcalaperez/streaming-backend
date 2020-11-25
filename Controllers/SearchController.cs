@@ -34,7 +34,7 @@ namespace RecYouBackend.Controllers
         [Authorize]
         public IEnumerable<Model.User> Get(string searchname)
         {
-            return _database.GetInstance.Query<Model.User>("SELECT username, pic_url FROM users WHERE username LIKE @user", new { user = "%" + searchname + "%" });
+            return _database.GetInstance.Query<Model.User>("SELECT username, pic_url FROM users WHERE lower(username) LIKE @user", new { user = "%" + searchname.ToLower() + "%" });
         }
 
     }
