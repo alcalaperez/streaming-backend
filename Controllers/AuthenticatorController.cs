@@ -5,19 +5,29 @@ using RecYouBackend.Util;
 
 namespace RecYouBackend.Controllers
 {
+    /*
+    * Controller for auth actions
+    */
     [Route("api/[controller]")]
     [ApiController]
     public class AuthenticatorController : ControllerBase
     {
         private readonly IDatabaseConnection _database;
 
+        // Dependency inyection
         public AuthenticatorController(IDatabaseConnection database)
         {
             _database = database;
 
         }
 
-        // POST api/<AuthenticatorController>        
+        /* 
+        * POST api/<AuthenticatorController>
+        * Login for the user
+        * Returns 401 if the credentials are incorrect
+        * Returns a JWT if the credentials are valid
+        * No authentication required
+        */
         [HttpPost]
         public string Post([FromBody] UserDto userDto)
         {

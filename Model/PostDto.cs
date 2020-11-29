@@ -1,5 +1,8 @@
 ﻿namespace RecYouBackend.Model
 {
+    /*
+     * Data Transfer Object for posts
+    */
     public class PostDto
     {
         public string PictureUrl { get; set; }

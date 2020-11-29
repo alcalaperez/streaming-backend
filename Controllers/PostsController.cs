@@ -6,19 +6,27 @@ using Stream;
 
 namespace RecYouBackend.Controllers
 {
+    /*
+     * Controller for posts actions
+    */
     [Route("api/[controller]")]
     [ApiController]
     public class PostsController : ControllerBase
     {
         private readonly IStreamAPI _streamApi;
 
+        // Dependency inyection
         public PostsController(IStreamAPI streamAPI)
         {
             _streamApi = streamAPI;
         }
 
 
-        // POST api/<PostsController>
+        /* 
+         * POST api/<PostsController>
+         * Creates a new post for the user
+         * Authentication required
+        */
         [HttpPost]
         [Authorize]
         public void Post([FromBody] PostDto pdto)
@@ -34,7 +42,11 @@ namespace RecYouBackend.Controllers
             userTimeline.AddActivity(activityData);
         }
 
-        // DELETE api/<PostsController>/5
+        /* 
+         * DELETE api/<PostsController>/5
+         * Deletes a post from the user using the ForeignId
+         * Authentication required
+        */
         [HttpDelete]
         [Authorize]
         public async void Delete([FromBody] PostDto pdto)

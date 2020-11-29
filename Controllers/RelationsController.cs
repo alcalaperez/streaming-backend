@@ -7,18 +7,26 @@ using Stream;
 
 namespace RecYouBackend.Controllers
 {
+    /*
+     * Controller for relations actions
+    */
     [Route("api/[controller]")]
     [ApiController]
     public class RelationsController : ControllerBase
     {
         private readonly IStreamAPI _streamApi;
 
+        // Dependency inyection
         public RelationsController(IStreamAPI streamAPI)
         {
             _streamApi = streamAPI;
         }
 
-        // POST api/<RelationsController>
+        /* 
+         * POST api/<RelationsController>
+         * Follows an user
+         * Authentication required
+        */
         [HttpPost]
         [Authorize]
         public async Task PostAsync([FromBody] RelationDto rdto)
@@ -27,7 +35,11 @@ namespace RecYouBackend.Controllers
             await userTimeline.FollowFeed("user", rdto.UserToFollowUnfollow);
         }
 
-        // DELETE api/<RelationsController>
+        /* 
+         * DELETE api/<RelationsController>
+         * Unfollows an user
+         * Authentication required
+        */
         [HttpDelete]
         [Authorize]
         public async Task DeleteAsync([FromBody] RelationDto rdto)

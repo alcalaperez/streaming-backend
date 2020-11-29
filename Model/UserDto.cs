@@ -1,5 +1,8 @@
 ﻿namespace RecYouBackend.Model
 {
+    /*
+     * Data Transfer Object for users
+    */
     public class UserDto
     {
         public string Username { get; set; }

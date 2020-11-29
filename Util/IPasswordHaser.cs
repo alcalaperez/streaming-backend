@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Cryptography;
-using Microsoft.Extensions.Options;
 /// <summary>
 /// https://medium.com/dealeron-dev/storing-passwords-in-net-core-3de29a3da4d2
 /// </summary>

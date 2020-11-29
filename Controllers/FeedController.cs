@@ -5,18 +5,26 @@ using Stream;
 
 namespace RecYouBackend.Controllers
 {
+    /*
+    * Controller for timeline actions
+    */
     [Route("api/[controller]")]
     [ApiController]
     public class FeedController : ControllerBase
     {
         private readonly IStreamAPI _streamApi;
 
+        // Dependency inyection
         public FeedController(IStreamAPI streamAPI)
         {
             _streamApi = streamAPI;
         }
 
-        // GET api/<FeedController>/5
+        /* 
+         * GET api/<FeedController>/5
+         * Gets the timeline of the user calling this action
+         * Authentication required
+        */
         [HttpGet]
         [Authorize]
         public IEnumerable<Activity> Get()

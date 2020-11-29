@@ -2,6 +2,10 @@
 
 namespace RecYouBackend.Model
 {
+    /*
+     * Model for the users
+     * Light version
+    */
     public class User
     {
         public User(string userName, string profilePic)
@@ -18,6 +22,10 @@ namespace RecYouBackend.Model
 
     }
 
+    /*
+     * Model for the users with full info
+     * Extends the normal user and adds followers, following and posts
+    */
     public class FullUser : User
     {
         public IEnumerable<Stream.Follower> Following { get; internal set; }
