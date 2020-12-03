@@ -115,8 +115,11 @@ namespace RecYouBackend.Controllers
                 // Register user timeline to his profile (the user timeline will show his own posts)
                 IStreamFeed userTimeline = _streamApi.StreamClient.Feed("timeline", userDto.Username);
                 await userTimeline.FollowFeed("user", userDto.Username);
-                // Follow the admin account with the welcome message
-                await userTimeline.FollowFeed("user", "RecYou");
+                // Follow the admin account with the welcome message (if the user registering is already RecYou ignore it)
+                if (userDto.Username != "RecYou")
+                {
+                    await userTimeline.FollowFeed("user", "RecYou");
+                }
             }
             catch (Exception e)
             {
