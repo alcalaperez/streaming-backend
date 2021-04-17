@@ -42,4 +42,4 @@ steps:
     projects: '**/RecYouBackend.csproj'
     arguments: '--configuration $(buildConfiguration) --no-restore'
     modifyOutputPath: false
-  displayName: 'Publish CustomerApi'
+  displayName: 'Publish Streaming API'
