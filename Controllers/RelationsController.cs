@@ -32,7 +32,7 @@ namespace RecYouBackend.Controllers
         public async Task PostAsync([FromBody] RelationDto rdto)
         {
             IStreamFeed userTimeline = _streamApi.StreamClient.Feed("timeline", User.Identity.Name);
-            await userTimeline.FollowFeed("user", rdto.UserToFollowUnfollow);
+            await userTimeline.FollowFeedAsync("user", rdto.UserToFollowUnfollow);
         }
 
         /* 
@@ -45,7 +45,7 @@ namespace RecYouBackend.Controllers
         public async Task DeleteAsync([FromBody] RelationDto rdto)
         {
             IStreamFeed userTimeline = _streamApi.StreamClient.Feed("timeline", User.Identity.Name);
-            await userTimeline.UnfollowFeed("user", rdto.UserToFollowUnfollow);
+            await userTimeline.UnfollowFeedAsync("user", rdto.UserToFollowUnfollow);
         }
     }
 }

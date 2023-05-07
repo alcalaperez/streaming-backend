@@ -59,9 +59,9 @@ namespace RecYouBackend.Controllers
                 fullUser = _database.GetInstance.QuerySingleOrDefault<FullUser>("SELECT username, pic_url FROM users where username=@user", new { user = userName });
                 IStreamFeed userFeed = _streamApi.StreamClient.Feed("user", userName);
                 IStreamFeed userTimeline = _streamApi.StreamClient.Feed("timeline", userName);
-                fullUser.Posts = await userFeed.GetActivities();
-                fullUser.Followers = await userFeed.Followers();
-                fullUser.Following = await userTimeline.Following();
+                fullUser.Posts = (await userFeed.GetActivitiesAsync()).Results;
+                fullUser.Followers = (await userFeed.FollowersAsync()).Results;
+                fullUser.Following = (await userTimeline.FollowingAsync()).Results;
 
                 // Remove the user itself from the list of followers/following
                 fullUser.Followers = fullUser.Followers.Where(f => f.FeedId.Split(':')[1] != userName);
@@ -108,17 +108,17 @@ namespace RecYouBackend.Controllers
             try
             {
                 // Add user to the Stream API
-                await _streamApi.StreamClient.Users.Add(userDto.Username, userData);
+                await _streamApi.StreamClient.Users.AddAsync(userDto.Username, userData);
                 PasswordHasher ph = new PasswordHasher();
                 // Add user to the DB
                 _database.GetInstance.Execute("INSERT INTO users (username, pass, pic_url) VALUES(@user, @pass, @pic)", new { user = userDto.Username, pass = ph.Hash(userDto.Password), pic = userDto.ProfilePictureUrl });
                 // Register user timeline to his profile (the user timeline will show his own posts)
                 IStreamFeed userTimeline = _streamApi.StreamClient.Feed("timeline", userDto.Username);
-                await userTimeline.FollowFeed("user", userDto.Username);
+                await userTimeline.FollowFeedAsync("user", userDto.Username);
                 // Follow the admin account with the welcome message (if the user registering is already RecYou ignore it)
                 if (userDto.Username != "RecYou")
                 {
-                    await userTimeline.FollowFeed("user", "RecYou");
+                    await userTimeline.FollowFeedAsync("user", "RecYou");
                 }
             }
             catch (Exception e)

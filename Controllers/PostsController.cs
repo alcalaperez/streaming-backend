@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RecYouBackend.Model;
 using Stream;
+using Stream.Models;
 
 
 namespace RecYouBackend.Controllers
@@ -39,7 +40,7 @@ namespace RecYouBackend.Controllers
             };
 
 
-            userTimeline.AddActivity(activityData);
+            userTimeline.AddActivityAsync(activityData);
         }
 
         /* 
@@ -52,7 +53,7 @@ namespace RecYouBackend.Controllers
         public async void Delete([FromBody] PostDto pdto)
         {
             IStreamFeed userTimeline = _streamApi.StreamClient.Feed("user", User.Identity.Name);
-            await userTimeline.RemoveActivity(pdto.ForeignId);
+            await userTimeline.RemoveActivityAsync(pdto.ForeignId);
         }
     }
 }

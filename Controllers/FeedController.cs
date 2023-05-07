@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Stream;
+using Stream.Models;
 
 namespace RecYouBackend.Controllers
 {
@@ -30,7 +31,7 @@ namespace RecYouBackend.Controllers
         public IEnumerable<Activity> Get()
         {
             IStreamFeed userTimeline = _streamApi.StreamClient.Feed("timeline", User.Identity.Name);
-            return userTimeline.GetFlatActivities().Result.Results;
+            return userTimeline.GetFlatActivitiesAsync().Result.Results;
         }
 
     }

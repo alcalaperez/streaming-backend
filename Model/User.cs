@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Stream.Models;
 
 namespace RecYouBackend.Model
 {
@@ -28,9 +29,9 @@ namespace RecYouBackend.Model
     */
     public class FullUser : User
     {
-        public IEnumerable<Stream.Follower> Following { get; internal set; }
-        public IEnumerable<Stream.Activity> Posts { get; internal set; }
-        public IEnumerable<Stream.Follower> Followers { get; internal set; }
+        public IEnumerable<Follower> Following { get; internal set; }
+        public IEnumerable<Activity> Posts { get; internal set; }
+        public IEnumerable<Follower> Followers { get; internal set; }
     }
 
 }
